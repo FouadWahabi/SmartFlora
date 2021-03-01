@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 import collections
 from boto3.session import Session
@@ -105,10 +106,10 @@ def water():
 
 
 if __name__ == '__main__':
-    session = Session(aws_access_key_id="AKIAJ5RNU4IHID63UBXQ",
-                      aws_secret_access_key="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")
+    session = Session(aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+                      aws_secret_access_key=os.environ.get('AWS_ACCESS_KEY_SECRET'))
     machinelearning = session.client('machinelearning', region_name='us-east-1')
-    model_id = 'ml-wSihsNcr0sM'
+    model_id = os.environ.get('AWS_ML_MODEL_ID')
     model = machinelearning.get_ml_model(MLModelId=model_id)
     prediction_endpoint = model.get('EndpointInfo').get('EndpointUrl')
 
